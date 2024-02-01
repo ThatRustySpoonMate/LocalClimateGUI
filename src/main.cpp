@@ -75,6 +75,8 @@ void drawPage(sensorData_t *sensData) {
 
   displayHandler_draw_T_divider(displayHandler_get_height() / 3);
 
+  // Inside data
+
   displayHandler_draw_text_at_pos(18, 110, "Inside", 2);
 
   displayHandler_draw_line(21, 130, 86, 130, TFT_BLACK);
@@ -92,11 +94,26 @@ void drawPage(sensorData_t *sensData) {
   displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
 
 
-
+  // Outside data
 
   displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +18, 110, "Outside", 2);
 
   displayHandler_draw_line(displayHandler_get_width()/2 +18, 130, displayHandler_get_width()/2 +98, 130, TFT_BLACK);
+
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 155, "Coming soon", 2);
+
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 196, "Coming soon", 2);
+
+  displayHandler_set_text_colour(0xfff000); // Blue
+
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 140, "Temperature", 1);
+
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 181, "Humidity", 1);
+
+  displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
+
+
+  // Graph
 
   return;
 }
