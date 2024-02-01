@@ -2,10 +2,16 @@
 
 Adafruit_AHTX0 aht;
 
+TwoWire *test = new TwoWire(1);
+
+
+
 uint8_t climateSensor_init() {
+    test->setPins(27, 22);
 
+    test->begin();
 
-    if (!aht.begin()) {
+    if (!aht.begin(test)) {
         Serial.println("Could not find AHT? Check wiring");
         return 0;
     }

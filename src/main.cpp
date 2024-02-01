@@ -60,9 +60,9 @@ void drawPage(sensorData_t *sensData) {
 
   displayHander_clear();
 
-  displayHandler_draw_text_at_pos(0,50, String(sensData->temperature) + "c", 3);
+  displayHandler_draw_text_at_pos(0,50, String(sensData->temperature) + "c", 2);
 
-  displayHandler_draw_text_at_pos(0,100, String(sensData->humidity) + "%", 3);
+  displayHandler_draw_text_at_pos(0,100, String(sensData->humidity) + "%", 2);
 
   return;
 }
