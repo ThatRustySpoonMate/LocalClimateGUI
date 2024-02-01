@@ -3,6 +3,7 @@
 TaskHandle_t DisplayPWMTask;
 displayInput_t dispIn;
 sensorData_t sensorData;
+Graph temperatureGraph = Graph(220, 80, 15000);
 
 
 uint16_t posx, posy;
@@ -40,6 +41,7 @@ void setup() {
     displayHandler_draw_text_at_pos(0, 30, "Starting Application...", 1);
   }
 
+  temperatureGraph.trackVariable(&(sensorData.temperature));
 
 
   // Initilize PWM task
@@ -65,6 +67,8 @@ void loop() {
   if(every_n_ms(displayUpdateInterval, &displayTimer)) {
     drawPage(&sensorData);
   }
+
+  temperatureGraph.runDataCollector();
 
 }
 

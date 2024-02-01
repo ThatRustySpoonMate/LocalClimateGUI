@@ -2,6 +2,7 @@
 #include "helper.h"
 #include "displayHandler.hpp"
 #include "sensorsHandler.hpp"
+#include "graphHandler.hpp"
 
 
 
