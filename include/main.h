@@ -1,3 +1,8 @@
 #include <Arduino.h>
-#include <SPI.h>
-#include <TFT_eSPI.h> // Hardware-specific library
+#include "displayHandler.hpp"
+#include "helper.h"
+
+#define displayUpdateInterval 10000
+#define sensorPollInterval 5000 
+
+void drawPage();
