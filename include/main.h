@@ -1,8 +1,10 @@
 #include <Arduino.h>
-#include "displayHandler.hpp"
 #include "helper.h"
+#include "displayHandler.hpp"
+#include "sensorHandler.hpp"
 
-#define displayUpdateInterval 10000
+
+#define displayUpdateInterval 1000
 #define sensorPollInterval 5000 
 
 void drawPage();

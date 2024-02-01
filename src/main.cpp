@@ -1,6 +1,11 @@
 #include "main.h"
 
 TaskHandle_t DisplayPWMTask;
+displayInput_t dispIn;
+
+
+uint16_t posx, posy;
+uint8_t touched = 0;
 
 
 void setup() {
@@ -8,7 +13,7 @@ void setup() {
 
   Serial.begin(115200);
 
-  displayHandler_init(25);
+  displayHandler_init(&dispIn, 25);
 
 
   // Initilize PWM task
@@ -36,9 +41,14 @@ void loop() {
 
 
 void drawPage() {
+
+  uint8_t temp;
+
+  temp = 25;
+
   displayHander_clear();
 
-  displayHandler_draw_text_at_pos(0,50, "27c", 3);
+  displayHandler_draw_text_at_pos(0,50, String(temp) + "c", 3);
 
   displayHandler_draw_text_at_pos(0,100, "35%", 3);
 
