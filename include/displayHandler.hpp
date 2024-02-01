@@ -17,9 +17,17 @@ void displayHandler_init(displayInput_t *display_input, uint8_t brightness);
 
 void displayHandler_draw_text_at_pos(int32_t posX, int32_t posY, const String& string, uint8_t size);
 
+void displayHandler_draw_T_divider(uint16_t ypos);
+
+void displayHandler_draw_line(uint32_t xs, uint32_t ys, uint32_t xe, uint32_t ye, uint32_t col);
+
 void displayHandler_set_bg_colour(uint32_t col);
 
 void displayHandler_set_text_colour(uint32_t col);
+
+uint32_t displayHandler_get_width();
+
+uint32_t displayHandler_get_height();
 
 void displayHander_clear(void);
 
