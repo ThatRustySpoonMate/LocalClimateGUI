@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "helper.h"
 #include "displayHandler.hpp"
-#include "sensorHandler.hpp"
+
 
 
 #define displayUpdateInterval 1000
