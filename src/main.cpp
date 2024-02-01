@@ -115,6 +115,10 @@ void drawPage(sensorData_t *sensData) {
 
   // Graph
 
+  displayHandler_draw_text_at_pos(0, 0, "Temperature past 30 mins", 1);
+
+  
+
   return;
 }
 
