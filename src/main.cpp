@@ -102,13 +102,17 @@ void drawPage(sensorData_t *sensData) {
 
   displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 155, "Coming soon", 2);
 
-  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 196, "Coming soon", 2);
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 195, "Coming soon", 2);
+
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 235, "Coming soon", 2);
 
   displayHandler_set_text_colour(0xfff000); // Blue
 
   displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 140, "Temperature", 1);
 
-  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 181, "Humidity", 1);
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 180, "Humidity", 1);
+
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 220, "Pressure", 1);
 
   displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
 
