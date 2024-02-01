@@ -37,6 +37,12 @@ void displayHandler_set_bg_colour(uint32_t col) {
     return;
 }
 
+void displayHandler_set_text_colour(uint32_t col){
+    tft.setTextColor(col);
+
+    return;
+}
+
 
 void displayHander_clear(void) {
     tft.fillScreen(TFT_WHITE);

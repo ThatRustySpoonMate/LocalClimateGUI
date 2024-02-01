@@ -19,6 +19,8 @@ void displayHandler_draw_text_at_pos(int32_t posX, int32_t posY, const String& s
 
 void displayHandler_set_bg_colour(uint32_t col);
 
+void displayHandler_set_text_colour(uint32_t col);
+
 void displayHander_clear(void);
 
 uint8_t displayHander_get_touch(uint16_t *posx, uint16_t *posy);

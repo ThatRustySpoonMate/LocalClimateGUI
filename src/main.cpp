@@ -2,6 +2,7 @@
 
 TaskHandle_t DisplayPWMTask;
 displayInput_t dispIn;
+sensorData_t sensorData;
 
 
 uint16_t posx, posy;
@@ -13,8 +14,20 @@ void setup() {
 
   Serial.begin(115200);
 
+  // Init display
   displayHandler_init(&dispIn, 25);
 
+  // Init AHT20 sensor
+  if(!climateSensor_init()) {
+    displayHandler_set_text_colour(0x0000fff); // Red
+    displayHandler_draw_text_at_pos(0, 0, "Unable to find AHT20", 1);
+    displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
+    displayHandler_draw_text_at_pos(0, 10, "--------------------------------", 1);
+    displayHandler_draw_text_at_pos(0, 25, "Check top connector", 1);
+    displayHandler_draw_text_at_pos(0, 50, "on right hand side of", 1);
+    displayHandler_draw_text_at_pos(0, 75, "device", 1);
+    for(;;)delay(1000);
+  }
 
   // Initilize PWM task
   xTaskCreatePinnedToCore(
@@ -30,29 +43,27 @@ void setup() {
 }
 
 void loop() {
-  static uint32_t displayTimer;
+  static uint32_t displayTimer, sensorTimer;
+
+  if(every_n_ms(sensorPollInterval, &sensorTimer)) {
+    climateSensor_poll(&sensorData);
+  }
 
   if(every_n_ms(displayUpdateInterval, &displayTimer)) {
-    drawPage();
+    drawPage(&sensorData);
   }
 
 }
 
 
-
-void drawPage() {
-
-  uint8_t temp;
-
-  temp = 25;
+void drawPage(sensorData_t *sensData) {
 
   displayHander_clear();
 
-  displayHandler_draw_text_at_pos(0,50, String(temp) + "c", 3);
+  displayHandler_draw_text_at_pos(0,50, String(sensData->temperature) + "c", 3);
 
-  displayHandler_draw_text_at_pos(0,100, "35%", 3);
+  displayHandler_draw_text_at_pos(0,100, String(sensData->humidity) + "%", 3);
 
-
-
+  return;
 }
 
