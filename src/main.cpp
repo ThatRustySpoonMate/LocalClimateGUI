@@ -3,7 +3,7 @@
 TaskHandle_t DisplayPWMTask;
 displayInput_t dispIn;
 sensorData_t sensorData;
-Graph temperatureGraph = Graph(220, 80, 15000);
+Graph* temperatureGraph = nullptr;
 
 
 uint16_t posx, posy;
@@ -17,6 +17,9 @@ void setup() {
 
   // Init display
   displayHandler_init(&dispIn, 20);
+
+  // Init Graph
+  temperatureGraph = new Graph(210, 106, displayHandler_get_width(), 2, 0x000fff, 60000);
 
   // Init AHT20 sensor
   if(!climateSensor_init()) {
@@ -41,7 +44,7 @@ void setup() {
     displayHandler_draw_text_at_pos(0, 30, "Starting Application...", 1);
   }
 
-  temperatureGraph.trackVariable(&(sensorData.temperature));
+  temperatureGraph->trackVariable(&(sensorData.temperature));
 
 
   // Initilize PWM task
@@ -68,7 +71,7 @@ void loop() {
     drawPage(&sensorData);
   }
 
-  temperatureGraph.runDataCollector();
+  temperatureGraph->runDataCollector();
 
 }
 
@@ -76,6 +79,14 @@ void loop() {
 void drawPage(sensorData_t *sensData) {
 
   displayHander_clear();
+
+  // Graph
+
+  displayHandler_draw_text_at_pos(0, 0, "Temperature past 30 mins", 1);
+
+  displayHandler_draw_graph(temperatureGraph);
+
+  // Draw 'T' Divider
 
   displayHandler_draw_T_divider(displayHandler_get_height() / 3);
 
@@ -119,11 +130,6 @@ void drawPage(sensorData_t *sensData) {
   displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 220, "Pressure", 1);
 
   displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
-
-
-  // Graph
-
-  displayHandler_draw_text_at_pos(0, 0, "Temperature past 30 mins", 1);
 
   
 

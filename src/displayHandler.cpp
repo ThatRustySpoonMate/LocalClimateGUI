@@ -46,6 +46,48 @@ void displayHandler_draw_line(uint32_t xs, uint32_t ys, uint32_t xe, uint32_t ye
 }
 
 
+void displayHandler_draw_graph(Graph* graphToDraw) {
+
+
+    /* The following few lines are custom code not designed to be used in other projects as it is hard-coded to meet my requirements - this could easily be implemented in the graph object as variables*/
+    // Draw Y-Axis
+    tft.drawLine(graphToDraw->xpos +1, graphToDraw->ypos, graphToDraw->xpos +1, graphToDraw->ypos - 95, TFT_BLACK); // Need to manually update 4th arg if want to change height of Y-Axis line
+
+    // Draw stalk
+    tft.drawLine(graphToDraw->xpos +1, graphToDraw->ypos - (25 * graphToDraw->yScaler), graphToDraw->xpos +5, graphToDraw->ypos - (25 * graphToDraw->yScaler), TFT_BLACK);
+
+    // Draw baseline
+    tft.setTextSize(0);
+    tft.setTextColor(TFT_BLACK);
+    tft.drawString("25", graphToDraw->xpos +10, graphToDraw->ypos - (25 * graphToDraw->yScaler) - 3 );
+    tft.setTextSize(1);
+
+    ArduinoQueue<uint32_t>::Node* currentNode = graphToDraw->dataPoints.getHeadNode();
+    ArduinoQueue<uint32_t>::Node* nextNode = currentNode->next;
+    uint32_t idx = 0;
+    while (currentNode != nullptr) {
+        uint32_t currentData = currentNode->item;
+
+
+        if(nextNode == nullptr) {
+            // CurrentNode holds the most recent datapoint - no need to do anything
+            return;
+        }
+
+        uint32_t nextData = nextNode->item;
+
+        tft.drawLine(idx * graphToDraw->ptp_distance_x, graphToDraw->ypos - (currentData * graphToDraw->yScaler), (idx+1) * graphToDraw->ptp_distance_x, graphToDraw->ypos - (nextData* graphToDraw->yScaler), graphToDraw->col);
+
+        currentNode = nextNode;
+        nextNode = currentNode->next;
+        idx++;
+    }
+
+    return;
+    
+}
+
+
 void displayHandler_set_bg_colour(uint32_t col) {
     tft.fillScreen(col);
 
@@ -103,3 +145,5 @@ void displayHandler_PWM(void * parameter) {
     
     }
 }
+
+

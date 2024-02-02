@@ -1,7 +1,9 @@
 #pragma once
 
+#include "graphHandler.hpp"
 #include <SPI.h>
 #include <TFT_eSPI.h> // Hardware-specific library
+
 
 #define DISPLAY_LIGHT_ON_TOUCH_DURATION 10000 // MS
 
@@ -23,6 +25,8 @@ void displayHandler_draw_T_divider(uint16_t ypos);
 
 void displayHandler_draw_line(uint32_t xs, uint32_t ys, uint32_t xe, uint32_t ye, uint32_t col);
 
+void displayHandler_draw_graph(Graph* graphToDraw);
+
 void displayHandler_set_bg_colour(uint32_t col);
 
 void displayHandler_set_text_colour(uint32_t col);
@@ -36,4 +40,5 @@ void displayHander_clear(void);
 uint8_t displayHander_get_touch(uint16_t *posx, uint16_t *posy);
 
 void displayHandler_PWM(void * parameter);
+
 
