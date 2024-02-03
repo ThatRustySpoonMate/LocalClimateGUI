@@ -37,7 +37,7 @@ void Graph::runDataCollector() {
         dataPoints.dequeue();
 
         // Add new element
-        dataPoints.enqueue( ( (uint32_t)*trackedVar ) );
+        dataPoints.enqueue( *trackedVar  );
 
         // Debug - print all elements
         /*

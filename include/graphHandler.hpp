@@ -4,7 +4,7 @@
 #include <ArduinoQueue.h>
 #include "helper.h"
 
-#define NUM_DATA_POINTS 30 
+#define NUM_DATA_POINTS 70 
 
 // Class that builds a graph of time-series data
 // The data is 1 dimensional with time being inferred from a given (consistent) interval
@@ -13,7 +13,7 @@ class Graph {
     public:
 
         //LinkedList<uint32_t> dataPoints = LinkedList<uint32_t>();
-        ArduinoQueue<uint32_t> dataPoints = ArduinoQueue<uint32_t>(NUM_DATA_POINTS);
+        ArduinoQueue<float> dataPoints = ArduinoQueue<float>(NUM_DATA_POINTS);
         uint32_t dataPointInterval; // ms between each data point
 
         uint32_t xpos; // of 0,0 (For best results - make this divisble by the NUM_DATA_POINTS)

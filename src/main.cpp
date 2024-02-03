@@ -16,7 +16,7 @@ void setup() {
   Serial.begin(115200);
 
   // Init display
-  displayHandler_init(&dispIn, 20);
+  displayHandler_init(&dispIn, DISPLAY_BRIGHTNESS);
 
   // Init Graph
   temperatureGraph = new Graph(210, 106, displayHandler_get_width(), 2, 0x000fff, 60000);
@@ -63,11 +63,11 @@ void setup() {
 void loop() {
   static uint32_t displayTimer, sensorTimer;
 
-  if(every_n_ms(sensorPollInterval, &sensorTimer)) {
+  if(every_n_ms(SENSOR_POLL_INTERVAL, &sensorTimer)) {
     climateSensor_poll(&sensorData);
   }
 
-  if(every_n_ms(displayUpdateInterval, &displayTimer)) {
+  if(every_n_ms(DISPLAY_UPDATE_INTERVAL, &displayTimer)) {
     drawPage(&sensorData);
   }
 
@@ -82,7 +82,7 @@ void drawPage(sensorData_t *sensData) {
 
   // Graph
 
-  displayHandler_draw_text_at_pos(0, 0, "Temperature past 30 mins", 1);
+  displayHandler_draw_text_at_pos(0, 0, "Temperature past 70 mins", 1);
 
   displayHandler_draw_graph(temperatureGraph);
 

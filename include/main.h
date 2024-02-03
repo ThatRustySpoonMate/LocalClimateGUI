@@ -6,7 +6,8 @@
 
 
 
-#define displayUpdateInterval 5000
-#define sensorPollInterval 5000 
+#define DISPLAY_UPDATE_INTERVAL 5000
+#define SENSOR_POLL_INTERVAL 5000 
+#define DISPLAY_BRIGHTNESS 20 // Percent
 
 void drawPage(sensorData_t *sensData);

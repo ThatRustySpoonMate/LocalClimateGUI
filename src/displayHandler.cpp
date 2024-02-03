@@ -64,11 +64,11 @@ void displayHandler_draw_graph(Graph* graphToDraw) {
 
 
     // Read each data point and it's next data point and draw a line between them
-    ArduinoQueue<uint32_t>::Node* currentNode = graphToDraw->dataPoints.getHeadNode();
-    ArduinoQueue<uint32_t>::Node* nextNode = currentNode->next;
+    ArduinoQueue<float>::Node* currentNode = graphToDraw->dataPoints.getHeadNode();
+    ArduinoQueue<float>::Node* nextNode = currentNode->next;
     uint32_t idx = 0;
     while (currentNode != nullptr) {
-        uint32_t currentData = currentNode->item;
+        float currentData = currentNode->item;
 
 
         if(nextNode == nullptr) {
@@ -76,7 +76,7 @@ void displayHandler_draw_graph(Graph* graphToDraw) {
             return;
         }
 
-        uint32_t nextData = nextNode->item;
+        float nextData = nextNode->item;
         //tft.drawWideLine Test this
         tft.drawLine(idx * graphToDraw->ptp_distance_x, graphToDraw->ypos - (currentData * graphToDraw->yScaler), (idx+1) * graphToDraw->ptp_distance_x, graphToDraw->ypos - (nextData* graphToDraw->yScaler), graphToDraw->col);
 
