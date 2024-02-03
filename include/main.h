@@ -9,6 +9,11 @@
 
 #define DISPLAY_UPDATE_INTERVAL 5000
 #define SENSOR_POLL_INTERVAL 5000 
+#define SENSOR_LOG_INTERVAL 30000
 #define DISPLAY_BRIGHTNESS 20 // Percent
 
-void drawPage(sensorData_t *sensData);
+const char * externStorageDirectory = "/ClimateData";
+const char * externStorageDataFilePath = "/ClimateData/data.csv";
+
+
+void drawPage(sensorData_t *sensData); 

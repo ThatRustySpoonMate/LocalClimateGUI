@@ -4,6 +4,7 @@ TaskHandle_t DisplayPWMTask;
 displayInput_t dispIn;
 sensorData_t sensorData;
 Graph* temperatureGraph = nullptr;
+externStorage_t sdCardStatus;
 
 
 uint16_t posx, posy;
@@ -39,11 +40,35 @@ void setup() {
 
     displayHandler_draw_text_at_pos(55, 0, "Connected", 1);
     displayHandler_draw_text_at_pos(85, 15, "Connected", 1);
-
     displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
-    displayHandler_draw_text_at_pos(0, 30, "Starting Application...", 1);
   }
 
+
+  // Init SD Card
+  displayHandler_draw_text_at_pos(0, 30, "SD Card: ", 1);
+  if(!SD.begin(5)){
+    // Unable to detect SD Card
+    Serial.println("Card Mount Failed");
+    displayHandler_set_text_colour(TFT_BLUE); // Yellow
+    displayHandler_draw_text_at_pos(55, 30, "Not detected ", 1);
+    sdCardStatus.connected = false;
+    sdCardStatus.used = false;
+  } else {
+    // SD Card successfully init'd
+    uint8_t cardType = SD.cardType();
+    displayHandler_set_text_colour(0xfff000); // Blue
+    displayHandler_draw_text_at_pos(55, 30, "Connected", 1);
+    sdCardStatus.connected = true;
+    sdCardStatus.used = true;
+
+   // Setup SD Card file structure
+   // If already exists, won't overwrite
+    createDir(SD, externStorageDirectory);
+  }
+  displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
+
+
+  // Setup graph to track var
   temperatureGraph->trackVariable(&(sensorData.temperature));
 
 
@@ -58,10 +83,14 @@ void setup() {
       0); /* Core where the task should run */
 
 
+  // Final GUI Text
+  displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
+  displayHandler_draw_text_at_pos(0, 45, "Starting Application...", 1);
+
 }
 
 void loop() {
-  static uint32_t displayTimer, sensorTimer;
+  static uint32_t displayTimer, sensorTimer, sensorLogTimer;
 
   if(every_n_ms(SENSOR_POLL_INTERVAL, &sensorTimer)) {
     climateSensor_poll(&sensorData);
@@ -69,6 +98,10 @@ void loop() {
 
   if(every_n_ms(DISPLAY_UPDATE_INTERVAL, &displayTimer)) {
     drawPage(&sensorData);
+  }
+
+  if(sdCardStatus.used == true && every_n_ms(SENSOR_LOG_INTERVAL, &sensorLogTimer)) {
+    writeReadingToStorage(SD, &sensorData);
   }
 
   temperatureGraph->runDataCollector();

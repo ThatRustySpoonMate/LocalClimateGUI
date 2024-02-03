@@ -1,3 +1,5 @@
+#pragma once
+
 #include <Adafruit_Sensor.h>
 #include <Adafruit_AHTX0.h>
 

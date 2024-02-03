@@ -156,3 +156,11 @@ void testFileIO(fs::FS &fs, const char * path){
   Serial.printf("%u bytes written for %u ms\n", 2048 * 512, end);
   file.close();
 }
+
+
+void writeReadingToStorage(fs::FS &fs, sensorData_t* sensorData) {
+    // Rows: timestamp,temperature,humidity
+    appendFile(fs, externStorageDataFilePath, (String(millis()) + "," + String(sensorData->temperature) + "," + String(sensorData->humidity) + "\n").c_str() );
+
+    return;
+}
