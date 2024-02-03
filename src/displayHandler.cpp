@@ -10,7 +10,7 @@ void displayHandler_init(displayInput_t *display_input, uint8_t brightness) {// 
   tft.setRotation(2); // Portrait mode
   tft.fillScreen(TFT_WHITE);
   tft.setTextColor(TFT_BLACK);
-  tft.setTextFont(1);
+  tft.setTextFont(1); // Default 1
 
   displayOnTime = brightness;
   displayOffTime = 100 - displayOnTime;
@@ -77,8 +77,8 @@ void displayHandler_draw_graph(Graph* graphToDraw) {
         }
 
         float nextData = nextNode->item;
-        //tft.drawWideLine Test this
-        tft.drawLine(idx * graphToDraw->ptp_distance_x, graphToDraw->ypos - (currentData * graphToDraw->yScaler), (idx+1) * graphToDraw->ptp_distance_x, graphToDraw->ypos - (nextData* graphToDraw->yScaler), graphToDraw->col);
+        tft.drawWideLine(idx * graphToDraw->ptp_distance_x, graphToDraw->ypos - (currentData * graphToDraw->yScaler), (idx+1) * graphToDraw->ptp_distance_x, graphToDraw->ypos - (nextData* graphToDraw->yScaler), 2, graphToDraw->col, TFT_WHITE); // Thick line
+        //tft.drawLine(idx * graphToDraw->ptp_distance_x, graphToDraw->ypos - (currentData * graphToDraw->yScaler), (idx+1) * graphToDraw->ptp_distance_x, graphToDraw->ypos - (nextData* graphToDraw->yScaler), graphToDraw->col); // 1px line
 
         currentNode = nextNode;
         nextNode = currentNode->next;
@@ -136,7 +136,6 @@ void displayHandler_PWM(void * parameter) {
 
     for(;;) {
 
-        // > x seconds since last screen touch
         digitalWrite(TFT_BL, LOW);
 
         delayMicroseconds(displayOffTime);

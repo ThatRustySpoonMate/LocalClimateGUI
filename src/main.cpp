@@ -78,9 +78,10 @@ void loop() {
 
 void drawPage(sensorData_t *sensData) {
 
+  // Clear screen
   displayHander_clear();
 
-  // Graph
+  // Draw Graph
 
   displayHandler_draw_text_at_pos(0, 0, "Temperature past 70 mins", 1);
 
@@ -96,9 +97,9 @@ void drawPage(sensorData_t *sensData) {
 
   displayHandler_draw_line(21, 130, 86, 130, TFT_BLACK);
 
-  displayHandler_draw_text_at_pos(0,155, String(sensData->temperature) + "c", 2);
+  displayHandler_draw_text_at_pos(0,155, String(sensData->temperature) + "c", 3);
 
-  displayHandler_draw_text_at_pos(0,196, String(sensData->humidity) + "%", 2);
+  displayHandler_draw_text_at_pos(0,196, String(sensData->humidity) + "%", 3);
 
   displayHandler_set_text_colour(0xfff000); // Blue
 
@@ -115,11 +116,11 @@ void drawPage(sensorData_t *sensData) {
 
   displayHandler_draw_line(displayHandler_get_width()/2 +18, 130, displayHandler_get_width()/2 +98, 130, TFT_BLACK);
 
-  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 155, "Coming soon", 2);
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 155, "Coming soon", 3);
 
-  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 195, "Coming soon", 2);
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 195, "Coming soon", 3);
 
-  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 235, "Coming soon", 2);
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 235, "Coming soon", 3);
 
   displayHandler_set_text_colour(0xfff000); // Blue
 
