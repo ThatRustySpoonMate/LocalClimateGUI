@@ -6,6 +6,8 @@ sensorData_t sensorData;
 Graph* temperatureGraph = nullptr;
 Graph* humidityGraph = nullptr;
 externStorage_t sdCardStatus;
+WifiStatus_t wifiStatus;
+MQTTStatus_t mqttStatus;
 
 
 uint16_t posx, posy;
@@ -13,7 +15,9 @@ uint8_t touched = 0;
 
 
 void setup() {
-  setCpuFrequencyMhz(80);
+  setCpuFrequencyMhz(240);
+
+  config();
 
   Serial.begin(115200);
 
@@ -21,8 +25,8 @@ void setup() {
   displayHandler_init(&dispIn, DISPLAY_BRIGHTNESS);
 
   // Init Graph
-  temperatureGraph = new Graph(210, 106, displayHandler_get_width(), 2, 0x000fff, 6000);
-  humidityGraph = new Graph(210, 106, displayHandler_get_width(), 1, 0xfff000, 6000);
+  temperatureGraph = new Graph(210, 106, displayHandler_get_width(), 2, 0x000fff, 60000);
+  humidityGraph = new Graph(210, 106, displayHandler_get_width(), 1, 0xfff000, 60000);
 
   // Init AHT20 sensor
   if(!climateSensor_init()) {
@@ -47,34 +51,57 @@ void setup() {
 
 
   // Init SD Card
-  displayHandler_draw_text_at_pos(0, 30, "SD Card: ", 1);
-  if(!SD.begin(5)){
-    // Unable to detect SD Card
-    Serial.println("Card Mount Failed");
-    displayHandler_set_text_colour(TFT_BLUE); // Yellow
-    displayHandler_draw_text_at_pos(55, 30, "Not detected ", 1);
-    sdCardStatus.connected = false;
-    sdCardStatus.used = false;
-  } else {
-    // SD Card successfully init'd
-    uint8_t cardType = SD.cardType();
-    displayHandler_set_text_colour(0xfff000); // Blue
-    displayHandler_draw_text_at_pos(55, 30, "Connected", 1);
-    sdCardStatus.connected = true;
-    sdCardStatus.used = true;
+  if(sdCardStatus.enabled) {
+    displayHandler_draw_text_at_pos(0, 30, "SD Card: ", 1);
+    if(!SD.begin(5)){
+      // Unable to detect SD Card
+      Serial.println("Card Mount Failed");
+      displayHandler_set_text_colour(TFT_BLUE); // Yellow
+      displayHandler_draw_text_at_pos(55, 30, "Not detected ", 1);
+      sdCardStatus.connected = false;
+    } else {
+      // SD Card successfully init'd
+      uint8_t cardType = SD.cardType();
+      displayHandler_set_text_colour(0xfff000); // Blue
+      displayHandler_draw_text_at_pos(55, 30, "Connected", 1);
+      sdCardStatus.connected = true;
 
-   // Setup SD Card file structure
-   // If already exists, won't overwrite
-    createDir(SD, externStorageDirectory);
+    // Setup SD Card file structure
+    // If already exists, won't overwrite
+      createDir(SD, externStorageDirectory);
+    }
+    displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
   }
-  displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
 
   // Init wifi
-  setup_wifi(WIFI_SSID, WIFI_PASSWORD);
+  if(wifiStatus.wifi_enabled) {
+    displayHandler_draw_text_at_pos(0, 45, "Wifi status: ", 1);
+    if(setup_wifi(WIFI_SSID, WIFI_PASSWORD, WIFI_CONNECT_TIMEOUT)) {
+      wifiStatus.wifi_connected = true;
+      displayHandler_set_text_colour(0xfff000); // Blue
+      displayHandler_draw_text_at_pos(80, 45, "Connected", 1);
+    } else {
+      wifiStatus.wifi_connected = true;
+      displayHandler_set_text_colour(TFT_BLUE); // Yellow
+      displayHandler_draw_text_at_pos(80, 45, "Failed", 1);
+    }
+    displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
+  }
   
   // Init mqtt
-  setup_mqtt(MQTT_BROKER_IP, MQTT_BROKER_PORT, DEVICE_ID, MQTT_MANAGEMENT_TOPIC);
-
+  if(mqttStatus.mqtt_enabled){
+    displayHandler_draw_text_at_pos(0, 60, "MQTT: ", 1);
+    if(mqttHandler_init(MQTT_BROKER_PORT)) {
+      mqttStatus.mqtt_connected = true;
+      displayHandler_set_text_colour(0xfff000); // Blue
+      displayHandler_draw_text_at_pos(50, 60, "Connected", 1);
+    } else {
+      mqttStatus.mqtt_connected = true;
+      displayHandler_set_text_colour(TFT_BLUE); // Yellow
+      displayHandler_draw_text_at_pos(50, 60, "Failed", 1);
+    }
+    displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
+  }
 
 
   // Setup graph to track var
@@ -95,12 +122,14 @@ void setup() {
 
   // Final GUI Text
   displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
-  displayHandler_draw_text_at_pos(0, 45, "Starting Application...", 1);
+  displayHandler_draw_text_at_pos(0, 75, "Starting Application...", 1);
+
+  delay(3000);
 
 }
 
 void loop() {
-  static uint32_t displayTimer, sensorTimer, sensorLogTimer;
+  static uint32_t displayTimer, sensorTimer, sensorLogTimer, MQTTTransmitTimer;
 
   if(every_n_ms(SENSOR_POLL_INTERVAL, &sensorTimer)) {
     climateSensor_poll(&sensorData);
@@ -110,8 +139,12 @@ void loop() {
     drawPage(&sensorData);
   }
 
-  if(sdCardStatus.used == true && every_n_ms(SENSOR_LOG_INTERVAL, &sensorLogTimer)) {
+  if(sdCardStatus.connected == true && every_n_ms(SENSOR_LOG_INTERVAL, &sensorLogTimer)) {
     writeReadingToStorage(SD, &sensorData);
+  }
+
+  if(mqttStatus.mqtt_connected == true && every_n_ms(MQTT_SENSOR_TRANSMIT_INTERVAL, &MQTTTransmitTimer) ) {
+    mqttHandler_transmit_readings(&sensorData);
   }
 
   temperatureGraph->runDataCollector();
@@ -183,3 +216,11 @@ void drawPage(sensorData_t *sensData) {
   return;
 }
 
+
+void config() {
+  sdCardStatus.enabled = true;
+  wifiStatus.wifi_enabled = true;
+  mqttStatus.mqtt_enabled = true;
+  
+  return;
+}

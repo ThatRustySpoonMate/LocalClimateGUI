@@ -136,7 +136,7 @@ uint8_t displayHander_get_touch(uint16_t *posx, uint16_t *posy){
 void displayHandler_PWM(void * parameter) {
 
     for(;;) {
-
+        // Reduce PWM frequency in order to allow for RTOS to switch tasks more
         digitalWrite(TFT_BL, LOW);
 
         delayMicroseconds(displayOffTime);

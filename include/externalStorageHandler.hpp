@@ -9,7 +9,7 @@ extern const char * externStorageDataFilePath;
 
 typedef struct {
     uint8_t connected : 1;
-    uint8_t used      : 1;
+    uint8_t enabled   : 1;
 } externStorage_t;
 
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels);

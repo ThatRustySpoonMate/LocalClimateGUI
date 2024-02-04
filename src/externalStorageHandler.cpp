@@ -157,7 +157,7 @@ void testFileIO(fs::FS &fs, const char * path){
   file.close();
 }
 
-
+// This should ideally be in a seprate (*higher level*) file as it relies on the functions defined here but that's a learning for my next project
 void writeReadingToStorage(fs::FS &fs, sensorData_t* sensorData) {
     // Rows: timestamp,temperature,humidity
     appendFile(fs, externStorageDataFilePath, (String(millis()) + "," + String(sensorData->temperature) + "," + String(sensorData->humidity) + "\n").c_str() );
