@@ -8,6 +8,7 @@ Graph::Graph(uint32_t posx, uint32_t posy, uint32_t screen_width, uint32_t scale
     yScaler = scale;
     col = colour;
     dataPointInterval = dataCollectionInterval;
+    dataCollectionTimer = 0;
 
     // Determine the distance between all data points
     //ptp_distance_x = screenWidth / NUM_DATA_POINTS;
@@ -30,7 +31,7 @@ void Graph::trackVariable(float *var) {
 
 
 void Graph::runDataCollector() {
-    static uint32_t dataCollectionTimer;
+    //static uint32_t dataCollectionTimer;
 
     if(every_n_ms(dataPointInterval, &dataCollectionTimer)) {
         // Remove oldest data item (if applicable)

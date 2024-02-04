@@ -22,6 +22,8 @@ class Graph {
         uint32_t yScaler; // if x, every +1 change in a data point will correlate to that data point being displayed x pixels higher (This can be changed on the fly to rescale the graph)
         uint32_t col;
 
+        uint32_t dataCollectionTimer;
+
         uint32_t ptp_distance_x;  // X-distance between each data point on the graph
 
 

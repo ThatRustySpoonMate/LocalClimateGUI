@@ -21,7 +21,7 @@ void setup() {
   displayHandler_init(&dispIn, DISPLAY_BRIGHTNESS);
 
   // Init Graph
-  temperatureGraph = new Graph(210, 106, displayHandler_get_width(), 2, 0x000fff, 60000);
+  temperatureGraph = new Graph(210, 106, displayHandler_get_width(), 2, 0x000fff, 6000);
   humidityGraph = new Graph(210, 106, displayHandler_get_width(), 1, 0xfff000, 6000);
 
   // Init AHT20 sensor
@@ -108,6 +108,7 @@ void loop() {
   }
 
   temperatureGraph->runDataCollector();
+  delay(1);
   humidityGraph->runDataCollector();
 
 }
@@ -122,9 +123,9 @@ void drawPage(sensorData_t *sensData) {
 
   displayHandler_draw_text_at_pos(0, 0, "Temperature past 70 mins", 1);
 
-  displayHandler_draw_graph(temperatureGraph);
-
   displayHandler_draw_graph(humidityGraph);
+
+  displayHandler_draw_graph(temperatureGraph);
 
   // Draw 'T' Divider
 

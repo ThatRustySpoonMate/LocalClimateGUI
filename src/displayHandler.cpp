@@ -58,8 +58,9 @@ void displayHandler_draw_graph(Graph* graphToDraw) {
 
     // Draw baseline
     tft.setTextSize(0);
-    tft.setTextColor(TFT_BLACK);
+    tft.setTextColor(graphToDraw->col);
     tft.drawString("25", graphToDraw->xpos +10, graphToDraw->ypos - (25 * graphToDraw->yScaler) - 3 );
+    tft.setTextColor(TFT_BLACK);
     tft.setTextSize(1);
 
 
