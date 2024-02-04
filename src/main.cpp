@@ -108,7 +108,6 @@ void loop() {
   }
 
   temperatureGraph->runDataCollector();
-  delay(1);
   humidityGraph->runDataCollector();
 
 }
