@@ -4,6 +4,7 @@ TaskHandle_t DisplayPWMTask;
 displayInput_t dispIn;
 sensorData_t sensorData;
 Graph* temperatureGraph = nullptr;
+Graph* humidityGraph = nullptr;
 externStorage_t sdCardStatus;
 
 
@@ -21,6 +22,7 @@ void setup() {
 
   // Init Graph
   temperatureGraph = new Graph(210, 106, displayHandler_get_width(), 2, 0x000fff, 60000);
+  humidityGraph = new Graph(210, 106, displayHandler_get_width(), 1, 0xfff000, 6000);
 
   // Init AHT20 sensor
   if(!climateSensor_init()) {
@@ -70,6 +72,7 @@ void setup() {
 
   // Setup graph to track var
   temperatureGraph->trackVariable(&(sensorData.temperature));
+  humidityGraph->trackVariable(&(sensorData.humidity));
 
 
   // Initilize PWM task
@@ -105,6 +108,7 @@ void loop() {
   }
 
   temperatureGraph->runDataCollector();
+  humidityGraph->runDataCollector();
 
 }
 
@@ -119,6 +123,8 @@ void drawPage(sensorData_t *sensData) {
   displayHandler_draw_text_at_pos(0, 0, "Temperature past 70 mins", 1);
 
   displayHandler_draw_graph(temperatureGraph);
+
+  displayHandler_draw_graph(humidityGraph);
 
   // Draw 'T' Divider
 
