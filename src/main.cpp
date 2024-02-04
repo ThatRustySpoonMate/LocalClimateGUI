@@ -69,6 +69,13 @@ void setup() {
   }
   displayHandler_set_text_colour(TFT_BLACK); // Restore text colour
 
+  // Init wifi
+  setup_wifi(WIFI_SSID, WIFI_PASSWORD);
+  
+  // Init mqtt
+  setup_mqtt(MQTT_BROKER_IP, MQTT_BROKER_PORT, DEVICE_ID, MQTT_MANAGEMENT_TOPIC);
+
+
 
   // Setup graph to track var
   temperatureGraph->trackVariable(&(sensorData.temperature));
