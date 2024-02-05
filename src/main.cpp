@@ -159,7 +159,7 @@ void drawPage(sensorData_t *sensData) {
 
   // Draw Graph
 
-  displayHandler_draw_text_at_pos(0, 0, "Temperature past 70 mins", 1);
+  displayHandler_draw_text_at_pos(0, 0, "Temperature/Humidity past 70 mins", 1);
 
   displayHandler_draw_graph(humidityGraph);
 

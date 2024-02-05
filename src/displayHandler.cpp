@@ -12,8 +12,8 @@ void displayHandler_init(displayInput_t *display_input, uint8_t brightness) {// 
   tft.setTextColor(TFT_BLACK);
   tft.setTextFont(1); // Default 1
 
-  //displayOnTime = brightness;           // For microsecond PWNing
-  //displayOffTime = 100 - displayOnTime; // For microsecond PWNing
+  //displayOnTime = brightness;           // For microsecond PWMing
+  //displayOffTime = 100 - displayOnTime; // For microsecond PWMing
   displayOnTime = brightness / 10;
   displayOffTime = 10 - (brightness / 10);
 
