@@ -150,6 +150,8 @@ void loop() {
   temperatureGraph->runDataCollector();
   humidityGraph->runDataCollector();
 
+  mqtt_keep_alive();
+
 }
 
 

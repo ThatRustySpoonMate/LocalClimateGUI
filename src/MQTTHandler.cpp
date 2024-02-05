@@ -18,8 +18,8 @@ uint8_t mqttHandler_init(int port) {
 
 
 void mqttHandler_transmit_readings(sensorData_t* sensorData) {
+
   mqtt_transmit(MQTT_TOPIC_TX_TEMPERATURE, String(sensorData->temperature).c_str() );
-  delay(10);
   mqtt_transmit(MQTT_TOPIC_TX_HUMIDITY, String(sensorData->humidity).c_str() );
 
   return;
