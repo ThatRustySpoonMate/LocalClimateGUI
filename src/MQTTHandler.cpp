@@ -11,8 +11,8 @@ extern const char* MQTT_MANAGEMENT_TOPIC;
 extern const char* MQTT_TOPIC_TX_TEMPERATURE;
 extern const char* MQTT_TOPIC_TX_HUMIDITY;
 
-uint8_t mqttHandler_init(int port) {
-    setup_mqtt(MQTT_BROKER_IP, port, DEVICE_ID, MQTT_TOPIC_RX_TEMPERATURE, MQTT_TOPIC_RX_HUMIDITY, MQTT_TOPIC_RX_PRESSURE, MQTT_MANAGEMENT_TOPIC);
+uint8_t mqttHandler_init(int port, MQTT_RX_DATA* mqttData) {
+    setup_mqtt(MQTT_BROKER_IP, port, DEVICE_ID, MQTT_TOPIC_RX_TEMPERATURE, MQTT_TOPIC_RX_HUMIDITY, MQTT_TOPIC_RX_PRESSURE, MQTT_MANAGEMENT_TOPIC, mqttData);
     return mqtt_connect();
 }
 

@@ -8,10 +8,7 @@ Graph* humidityGraph = nullptr;
 externStorage_t sdCardStatus;
 WifiStatus_t wifiStatus;
 MQTTStatus_t mqttStatus;
-
-
-uint16_t posx, posy;
-uint8_t touched = 0;
+MQTT_RX_DATA mqttData;
 
 
 void setup() {
@@ -91,7 +88,7 @@ void setup() {
   // Init mqtt
   if(mqttStatus.mqtt_enabled){
     displayHandler_draw_text_at_pos(0, 60, "MQTT: ", 1);
-    if(mqttHandler_init(MQTT_BROKER_PORT)) {
+    if(mqttHandler_init(MQTT_BROKER_PORT, &mqttData)) {
       mqttStatus.mqtt_connected = true;
       displayHandler_set_text_colour(0xfff000); // Blue
       displayHandler_draw_text_at_pos(50, 60, "Connected", 1);
@@ -197,11 +194,11 @@ void drawPage(sensorData_t *sensData) {
 
   displayHandler_draw_line(displayHandler_get_width()/2 +18, 130, displayHandler_get_width()/2 +98, 130, TFT_BLACK);
 
-  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 155, "Coming soon", 3);
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 155, String(mqttData.temperature) + "c", 3);
 
-  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 195, "Coming soon", 3);
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 195, String(mqttData.humidity) + "%", 3);
 
-  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 235, "Coming soon", 3);
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +2, 235, String(mqttData.pressure), 3);
 
   displayHandler_set_text_colour(0xfff000); // Blue
 

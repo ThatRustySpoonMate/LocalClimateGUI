@@ -2,13 +2,14 @@
 
 WiFiClient espClient;
 PubSubClient client(espClient);
+MQTT_RX_DATA* mqttRXData;
 
 const char *BROKER_IP;
 int BROKER_PORT;
 const char *DEVICE_NAME;
 const char *RX_TOPICS[4];
 
-void setup_mqtt(const char *MQTT_BROKER_IP, const int MQTT_BROKER_PORT, const char *DEV_NAME, const char *RX_TEMP, const char *RX_HUM, const char *RX_PRES, const char *MANAGEMENT_TOPIC) {
+void setup_mqtt(const char *MQTT_BROKER_IP, const int MQTT_BROKER_PORT, const char *DEV_NAME, const char *RX_TEMP, const char *RX_HUM, const char *RX_PRES, const char *MANAGEMENT_TOPIC, MQTT_RX_DATA* mqttdata) {
   BROKER_IP = MQTT_BROKER_IP;
   BROKER_PORT = MQTT_BROKER_PORT;
   DEVICE_NAME = DEV_NAME;
@@ -16,6 +17,7 @@ void setup_mqtt(const char *MQTT_BROKER_IP, const int MQTT_BROKER_PORT, const ch
   RX_TOPICS[1] = RX_HUM;
   RX_TOPICS[2] = RX_PRES;
   RX_TOPICS[3] = MANAGEMENT_TOPIC;
+  mqttRXData = mqttdata;
 
   client.setServer(BROKER_IP, BROKER_PORT);
 
@@ -86,33 +88,25 @@ void mqtt_reconnect() {
 }
 
 void message_rx_callback(char* topic, byte* message, unsigned int length) {
-  String messageTemp;
-
-  Serial.print("Message arrived on topic: ");
-  Serial.print(topic);
-  Serial.print(". Message: ");
-
+  String reassembledMessage;
   
   for (int i = 0; i < length; i++) {
-    Serial.print((char)message[i]);
-    
-    messageTemp += (char)message[i];
+    reassembledMessage += (char)message[i];
   }
-  Serial.println();
-  
   
 
   // If a message is received on the topic esp32/output, you check if the message is either "on" or "off". 
   // Changes the output state according to the message
-  // if (String(topic) == RX_TOPIC) {
-  //   Serial.print("Changing output to ");
-  //   if(messageTemp == "on"){
-  //     Serial.println("on");
-  //   }
-  //   else if(messageTemp == "off"){
-  //     Serial.println("off");
-  //   }
-  // }
+  if (String(topic) == RX_TOPICS[0]) { // Temperature
+    mqttRXData->temperature = reassembledMessage.toFloat();
+    mqttRXData->dataUpdated = true;
+  }  else if (String(topic) == RX_TOPICS[1]) { // Humidity
+    mqttRXData->humidity = reassembledMessage.toFloat();
+    mqttRXData->dataUpdated = true;
+  } else if (String(topic) == RX_TOPICS[2]) { // Pressure
+    mqttRXData->pressure = reassembledMessage.toFloat();
+    mqttRXData->dataUpdated = true;
+  }
 
   return;
 }
