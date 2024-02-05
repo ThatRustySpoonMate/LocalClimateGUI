@@ -37,7 +37,7 @@ void mqtt_transmit(const char *topic, const char *payload) {
 
 void mqtt_keep_alive() {
   if (!client.connected()) {
-    mqtt_reconnect();
+    mqtt_connect();
   }
 
   client.loop();
