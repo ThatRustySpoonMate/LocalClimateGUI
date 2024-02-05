@@ -12,8 +12,10 @@ void displayHandler_init(displayInput_t *display_input, uint8_t brightness) {// 
   tft.setTextColor(TFT_BLACK);
   tft.setTextFont(1); // Default 1
 
-  displayOnTime = brightness;
-  displayOffTime = 100 - displayOnTime;
+  //displayOnTime = brightness;           // For microsecond PWNing
+  //displayOffTime = 100 - displayOnTime; // For microsecond PWNing
+  displayOnTime = brightness / 10;
+  displayOffTime = 10 - (brightness / 10);
 
   displayInput = display_input;
   
@@ -136,14 +138,16 @@ uint8_t displayHander_get_touch(uint16_t *posx, uint16_t *posy){
 void displayHandler_PWM(void * parameter) {
 
     for(;;) {
-        // Reduce PWM frequency in order to allow for RTOS to switch tasks more
+        
         digitalWrite(TFT_BL, LOW);
 
-        delayMicroseconds(displayOffTime);
+        //delayMicroseconds(displayOffTime);
+        delay(displayOffTime); // Reduce PWM frequency in order to allow for RTOS to switch tasks more
 
         digitalWrite(TFT_BL, HIGH);
 
-        delayMicroseconds(displayOnTime);
+        //delayMicroseconds(displayOnTime);
+        delay(displayOnTime); // Reduce PWM frequency in order to allow for RTOS to switch tasks more
     
     }
 }
