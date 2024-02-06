@@ -1,5 +1,5 @@
+#pragma once
 #include <WiFi.h>
-
 
 typedef struct {
     uint8_t wifi_enabled : 1;
@@ -9,3 +9,5 @@ typedef struct {
 uint8_t setup_wifi(const char *ssid, const char *password, uint32_t timeout);
 
 void wifi_disconnect();
+
+void wifi_keep_alive(const char *WIFI_SSID, const char *WIFI_PASSWORD);

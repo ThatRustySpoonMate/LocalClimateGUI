@@ -36,3 +36,12 @@ void wifi_disconnect() {
 
   return;
 }
+
+
+void wifi_keep_alive(const char *WIFI_SSID, const char *WIFI_PASSWORD) {
+  if(WiFi.status() != WL_CONNECTED) {
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  }
+
+  return;
+}

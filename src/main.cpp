@@ -126,7 +126,7 @@ void setup() {
 }
 
 void loop() {
-  static uint32_t displayTimer, sensorTimer, sensorLogTimer, MQTTTransmitTimer, MQTTKeepAliveTimer;
+  static uint32_t displayTimer, sensorTimer, sensorLogTimer, MQTTTransmitTimer, MQTTKeepAliveTimer, WIFIKeepAliveTimer;
 
   if(every_n_ms(SENSOR_POLL_INTERVAL, &sensorTimer)) {
     climateSensor_poll(&sensorData);
@@ -138,6 +138,10 @@ void loop() {
 
   if(sdCardStatus.connected == true && every_n_ms(SENSOR_LOG_INTERVAL, &sensorLogTimer)) {
     writeReadingToStorage(SD, &sensorData);
+  }
+
+  if(wifiStatus.wifi_enabled == true && every_n_ms(WIFI_KEEP_ALIVE_INTERVAL, &WIFIKeepAliveTimer)) {
+    wifi_keep_alive(WIFI_SSID, WIFI_PASSWORD);
   }
 
   if(mqttStatus.mqtt_enabled == true && every_n_ms(MQTT_KEEP_ALIVE_INTERVAL, &MQTTKeepAliveTimer)) {

@@ -14,6 +14,7 @@
 #define SENSOR_LOG_INTERVAL 30000    // Millis
 #define MQTT_SENSOR_TRANSMIT_INTERVAL 30000 // Millis
 #define MQTT_KEEP_ALIVE_INTERVAL 5000 // Millis
+#define WIFI_KEEP_ALIVE_INTERVAL 60000 // Millis
 #define DISPLAY_BRIGHTNESS 20        // Percent
 #define WIFI_CONNECT_TIMEOUT 15 * 1000 // Millis
 
