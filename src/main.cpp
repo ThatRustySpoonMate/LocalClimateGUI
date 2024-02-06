@@ -140,12 +140,12 @@ void loop() {
     writeReadingToStorage(SD, &sensorData);
   }
 
-  if(mqttStatus.mqtt_connected == true && every_n_ms(MQTT_SENSOR_TRANSMIT_INTERVAL, &MQTTTransmitTimer) ) {
-    mqttHandler_transmit_readings(&sensorData);
+  if(mqttStatus.mqtt_enabled == true && every_n_ms(MQTT_KEEP_ALIVE_INTERVAL, &MQTTKeepAliveTimer)) {
+    mqtt_keep_alive();
   }
 
-  if(mqttStatus.mqtt_connected == true && every_n_ms(MQTT_KEEP_ALIVE_INTERVAL, &MQTTKeepAliveTimer)) {
-    mqtt_keep_alive();
+  if(mqttStatus.mqtt_enabled == true && every_n_ms(MQTT_SENSOR_TRANSMIT_INTERVAL, &MQTTTransmitTimer) ) {
+    mqttHandler_transmit_readings(&sensorData);
   }
 
   temperatureGraph->runDataCollector();
