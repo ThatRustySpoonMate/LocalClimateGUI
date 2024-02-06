@@ -126,7 +126,7 @@ void setup() {
 }
 
 void loop() {
-  static uint32_t displayTimer, sensorTimer, sensorLogTimer, MQTTTransmitTimer;
+  static uint32_t displayTimer, sensorTimer, sensorLogTimer, MQTTTransmitTimer, MQTTKeepAliveTimer;
 
   if(every_n_ms(SENSOR_POLL_INTERVAL, &sensorTimer)) {
     climateSensor_poll(&sensorData);
@@ -144,10 +144,12 @@ void loop() {
     mqttHandler_transmit_readings(&sensorData);
   }
 
+  if(mqttStatus.mqtt_connected == true && every_n_ms(MQTT_KEEP_ALIVE_INTERVAL, &MQTTKeepAliveTimer)) {
+    mqtt_keep_alive();
+  }
+
   temperatureGraph->runDataCollector();
   humidityGraph->runDataCollector();
-
-  mqtt_keep_alive();
 
 }
 
