@@ -8,4 +8,5 @@ PWM Controlled brightness
 
 <h2>Preview:</h2>  
 
-![Weather display](https://github.com/ThatRustySpoonMate/LocalClimateGUI/assets/51020883/9984f6af-1d3c-4ad0-a83f-d3ea6204d49f)
+<img src="https://github.com/ThatRustySpoonMate/LocalClimateGUI/assets/51020883/9984f6af-1d3c-4ad0-a83f-d3ea6204d49f" width="400">
+
