@@ -21,9 +21,9 @@
 
 const char *MQTT_TOPIC_TX_TEMPERATURE = "home/upstairs/living-room/display/temperature";
 const char *MQTT_TOPIC_TX_HUMIDITY = "home/upstairs/living-room/display/humidity";
-const char *MQTT_TOPIC_RX_TEMPERATURE = "home/outside/garden/temperature";
-const char *MQTT_TOPIC_RX_HUMIDITY = "home/outside/garden/humidity";
-const char *MQTT_TOPIC_RX_PRESSURE = "home/outside/garden/pressure";
+const char *MQTT_TOPIC_RX_TEMPERATURE = "home/outside/back-deck/temperature/0";
+const char *MQTT_TOPIC_RX_HUMIDITY = "home/outside/back-deck/humidity/0";
+const char *MQTT_TOPIC_RX_PRESSURE = "home/outside/back-deck/pressure/0";
 const char *MQTT_MANAGEMENT_TOPIC = "manage/upstairs/living-room/display";
 
 

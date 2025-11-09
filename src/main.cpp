@@ -177,7 +177,7 @@ void drawPage(sensorData_t *sensData) {
 
   // Inside data
 
-  displayHandler_draw_text_at_pos(18, 110, "Inside", 2);
+  displayHandler_draw_text_at_pos(9, 110, "Upstairs", 2);
 
   displayHandler_draw_line(21, 130, 86, 130, TFT_BLACK);
 
@@ -196,7 +196,7 @@ void drawPage(sensorData_t *sensData) {
 
   // Outside data
 
-  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +18, 110, "Outside", 2);
+  displayHandler_draw_text_at_pos(displayHandler_get_width()/2 +3, 110, "Outside", 2);
 
   displayHandler_draw_line(displayHandler_get_width()/2 +18, 130, displayHandler_get_width()/2 +98, 130, TFT_BLACK);
 
